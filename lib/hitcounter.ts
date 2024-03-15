@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as logs from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 
 export interface HitCounterProps {
@@ -42,6 +43,7 @@ export class HitCounter extends Construct {
             runtime: lambda.Runtime.NODEJS_16_X,
             handler: 'hitcounter.handler',
             code: lambda.Code.fromAsset('lambda'),
+            logRetention: logs.RetentionDays.ONE_WEEK,
             environment: {
                 DOWNSTREAM_FUNCTION_NAME: props.downstream.functionName,
                 HITS_TABLE_NAME: table.tableName,
